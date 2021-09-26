@@ -15,22 +15,22 @@ const Sidebar = props => {
   return (
     <React.Fragment>
       <div className="vertical-menu">
-        <div className="navbar-brand-box">
+        <div className="navbar-brand-box" style={{paddingTop: '20px'}}>
           <Link to="/" className="logo logo-dark">
             <span className="logo-sm">
-              <img src={logoSm} alt="" height="22" />
+              <img src={logoSm} alt="" height="50" />
             </span>
             <span className="logo-lg">
-              <img src={logoDark} alt="" height="20" />
+              <img src={logoDark} alt="" height="70" />
             </span>
           </Link>
 
           <Link to="/" className="logo logo-light">
             <span className="logo-sm">
-              <img src={logoSm} alt="" height="22" />
+              <img src={logoSm} alt="" height="50" />
             </span>
             <span className="logo-lg">
-              <img src={logoLight} alt="" height="20" />
+              <img src={logoLight} alt="" height="70" />
             </span>
           </Link>
         </div>

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { useEffect } from "react"
+import React, {useEffect, useState} from "react"
 import { Row, Col, Alert, Container, CardBody ,Card} from "reactstrap"
 
 // Redux
@@ -15,8 +15,13 @@ import { userForgetPassword } from "../../store/actions"
 // import images
 import logo from "../../assets/images/logo-dark.png"
 import logolight from "../../assets/images/logo-light.png"
+import {postForgetPwd} from "../../microservices/auth/auth";
+import {isLogged} from "../../helpers/StorageManager";
 
-const ForgetPasswordPage = props => {
+const ForgetPasswordPage = ({ history }) => {
+  const [fpwdForm, setFpwdForm] = useState({})
+  const [errorMsg, setErrorMsg] = useState('')
+  const [succsessMsg, setSuccsessMsg] = useState('')
   useEffect(() => {
     document.body.className = "authentication-bg";
     // remove classname when component will unmount
@@ -24,9 +29,27 @@ const ForgetPasswordPage = props => {
       document.body.className = "";
     };
   });
-
+  useEffect(() => {
+    if(isLogged()){
+      history.push("/dashboard")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  console.log(isLogged())
   function handleValidSubmit(event, values) {
-    props.userForgetPassword(values, props.history)
+    //props.userForgetPassword(values, props.history)
+    setErrorMsg('')
+    setSuccsessMsg('')
+    postForgetPwd(fpwdForm).then((res) => {
+      if(res.customMessage !== null){
+        //props.history.push("/login")
+        setSuccsessMsg(res.customMessage)
+      }else{
+        setErrorMsg(res.errorName)
+      }
+    }).catch(() => {
+      setErrorMsg('אירעה שגיאה.')
+    })
   }
 
   return (
@@ -45,44 +68,52 @@ const ForgetPasswordPage = props => {
               <div>
 
                 <a href="/" className="mb-5 d-block auth-logo">
-                  <img src={logo} alt="" height="22" className="logo logo-dark" />
-                  <img src={logolight} alt="" height="22" className="logo logo-light" />
+                  <img src={logo} alt="" height="100" className="logo logo-dark" />
+                  <img src={logolight} alt="" height="100" className="logo logo-light" />
                 </a>
                 <Card>
 
                   <CardBody className="p-4">
 
                     <div className="text-center mt-2">
-                      <h5 className="text-primary">Reset Password</h5>
-                      <p className="text-muted">Reset Password with Minible.</p>
+                      <h5 className="text-primary">איפוס סיסמא</h5>
+                      <p className="text-muted">איפוס סיסמא למערכת StudentTracker.</p>
                     </div>
                     <div className="p-2 mt-4">
-                      <div className="alert alert-success text-center mb-4" role="alert">
-                        Enter your Email and instructions will be sent to you!
+                      <div className="alert  text-center mb-4" role="alert">
+                        הזן כתובת מייל ונשלח אלייך הוראות לאיפוס הסיסמא
                                         </div>
-                      {props.forgetError && props.forgetError ? (
+                      {errorMsg && errorMsg !== "" ? (
                         <Alert color="danger" className="text-center mb-4" style={{ marginTop: "13px" }}>
-                          {props.forgetError}
+                          {errorMsg}
                         </Alert>
                       ) : null}
-                      {props.forgetSuccessMsg ? (
+                      {succsessMsg && succsessMsg !== "" ? (
                         <Alert color="success" className="text-center mb-4" style={{ marginTop: "13px" }}>
-                          {props.forgetSuccessMsg}
+                          {succsessMsg}
                         </Alert>
                       ) : null}
 
                       <AvForm
-                        className="form-horizontal"
-                        onValidSubmit={(e, v) => handleValidSubmit(e, v)}
+                          className="form-horizontal"
+                          onValidSubmit={(e, v) => {
+                            handleValidSubmit(e, v)
+                          }}
                       >
                         <div className="mb-3">
                           <AvField
                             name="email"
-                            label="Email"
+                            label="דואר אלקטרוני"
                             className="form-control"
-                            placeholder="Enter email"
+                            errorMessage="אנא הזמן כתובת דואר אלקטרוני תקינה."
+                            placeholder="דואר אלקטרוני"
                             type="email"
                             required
+                            value={fpwdForm.email}
+                            onChange={(e) => { setFpwdForm({
+                              ...fpwdForm,
+                              email: e.target.value
+                            })}}
                           />
                         </div>
                         <Row className="row mb-0">
@@ -91,12 +122,12 @@ const ForgetPasswordPage = props => {
                               className="btn btn-primary w-md waves-effect waves-light"
                               type="submit"
                             >
-                              Reset
+                              אפס
                           </button>
                           </Col>
                         </Row>
                         <div className="mt-4 text-center">
-                          <p className="mb-0">Remember It ? <Link to="/login" className="fw-medium text-primary"> Signin </Link></p>
+                          <p className="mb-0">נזכרת בסיסמא?<Link to="/login" className="fw-medium text-primary"> התחבר</Link></p>
                         </div>
                       </AvForm>
                     </div>
@@ -105,8 +136,8 @@ const ForgetPasswordPage = props => {
                 </Card>
                 <div className="mt-5 text-center">
                 <p>
-                  © {new Date().getFullYear()} Minible. Crafted with{" "}
-                  <i className="mdi mdi-heart text-danger" /> by Themesbrand
+                  © {new Date().getFullYear()} StudentTracker. Crafted with{" "}
+                  <i className="mdi mdi-heart text-danger" /> by BuildNet
                 </p>
                 </div>
               </div>

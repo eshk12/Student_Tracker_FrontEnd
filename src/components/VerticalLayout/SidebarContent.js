@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import React, { useCallback, useEffect, useRef } from "react"
+import React, {useCallback, useEffect, useRef, useState} from "react"
 
 // //Import Scrollbar
 import SimpleBar from "simplebar-react"
@@ -14,6 +14,7 @@ import { withTranslation } from "react-i18next"
 
 const SidebarContent = props => {
   const ref = useRef();
+  const [userPermission, setUserPermission] = useState(0)
 
   const activateParentDropdown = useCallback((item) => {
     item.classList.add("active")
@@ -85,45 +86,58 @@ const SidebarContent = props => {
       }
     }
   }
+  useEffect(() => {
+    setUserPermission(localStorage.getItem("authUser_permission"));
+  }, [])
+  const menu = [{
+    moduleName: 'ניהול מוסדות',
+    moduleIcon: 'uil uil-university',
+    moduleLink: '/institutes',
+    modulePermission: 1
+  },{
+    moduleName: 'ניהול חוגים',
+    moduleIcon: 'uil uil-book',
+    moduleLink: '/departments',
+    modulePermission: 2
+  },{
+    moduleName: 'ניהול משתמשים',
+    moduleIcon: 'uil uil-users-alt',
+    moduleLink: '/users',
+    modulePermission: 2
+  },{
+    moduleName: 'ניהול זימונים',
+    moduleIcon: 'uil-telegram-alt',
+    moduleLink: '/invitations',
+    modulePermission: 3
+  }]
 
-  
-
+//TODO fixed menu according to permission.
   return (
     <React.Fragment>
       
-      <SimpleBar style={{ maxHeight: "100%" }} ref={ref} className="sidebar-menu-scroll">
+      <SimpleBar style={{ maxHeight: "100%" }} ref={ref} data-simplebar className="sidebar-menu-scroll">
         <div id="sidebar-menu">
           <ul className="metismenu list-unstyled" id="side-menu">
             <li className="menu-title">תפריט</li>
             <li>
               <Link to="/#" className="waves-effect">
                 <i className="uil-home-alt"></i>
-                <span>{props.t("עמוד ראשי")}</span>
+                <span>עמוד ראשי</span>
               </Link>
             </li>
-
             <li className="menu-title">מודלים</li>
-
-            <li>
-              <Link to="/users" className=" waves-effect">
-                <i className="uil-user-circle"></i>
-                <span>{props.t("ניהול משתמשים")}</span>
-              </Link>
-            </li>
-
-            <li>
-              <Link to="/#" className="waves-effect">
-                <i className="uil-calender"></i>
-                <span>{props.t("ניהול שנות לימודים")}</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/#" className="waves-effect">
-                <i className="uil-meeting-board"></i>
-                <span>{props.t("ניהול זימונים")}</span>
-              </Link>
-            </li>
-
+            {
+              menu.map((item, index) => {
+                  return item.modulePermission >= userPermission ? (
+                      <li key={index}>
+                        <Link to={item.moduleLink}  className=" waves-effect">
+                          <i className={item.moduleIcon}></i>
+                          <span>{item.moduleName}</span>
+                        </Link>
+                      </li>
+                  ) : null;
+              })
+            }
           </ul>
         </div>
       </SimpleBar>

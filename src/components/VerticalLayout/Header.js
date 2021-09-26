@@ -10,7 +10,7 @@ import { Link } from "react-router-dom"
 import { Dropdown, DropdownToggle, DropdownMenu } from "reactstrap"
 
 // Import menuDropdown
-import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown"
+/*import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown"*/
 import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu"
 
 import logoSm from "../../assets/images/logo-sm.png"
@@ -77,19 +77,19 @@ const Header = props => {
             <div className="navbar-brand-box">
               <Link to="/" className="logo logo-dark">
                 <span className="logo-sm">
-                  <img src={logoSm} alt="" height="22" />
+                  <img src={logoSm} alt="" height="50" />
                 </span>
                 <span className="logo-lg">
-                  <img src={logoDark} alt="" height="20" />
+                  <img src={logoDark} alt="" height="50" />
                 </span>
               </Link>
 
               <Link to="/" className="logo logo-light">
                 <span className="logo-sm">
-                  <img src={logoSm} alt="" height="22" />
+                  <img src={logoSm} alt="" height="50" />
                 </span>
                 <span className="logo-lg">
-                  <img src={logoLight} alt="" height="20" />
+                  <img src={logoLight} alt="" height="50" />
                 </span>
               </Link>
             </div>
@@ -105,16 +105,7 @@ const Header = props => {
               <i className="fa fa-fw fa-bars" />
             </button>
 
-            <Form className="app-search d-none d-lg-block">
-              <div className="position-relative">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder={props.t("Search") + "..."}
-                />
-                <span className="uil-search"></span>
-              </div>
-            </Form>
+
           </div>
 
           <div className="d-flex">
@@ -160,19 +151,13 @@ const Header = props => {
               </button>
             </Dropdown>
 
-            <NotificationDropdown />
+            {
+              /*<NotificationDropdown />*/
+              //TODO feature to activate soon
+            }
+
 
             <ProfileMenu />
-
-            <div onClick={() => {
-              props.showRightSidebarAction(!props.showRightSidebar)
-            }}
-              className="dropdown d-inline-block">
-              <button type="button" className="btn header-item noti-icon right-bar-toggle waves-effect">
-                <i className="uil-cog"></i>
-              </button>
-            </div>
-
           </div>
         </div>
       </header>
@@ -184,8 +169,6 @@ Header.propTypes = {
   changeSidebarType: PropTypes.func,
   leftMenu: PropTypes.any,
   leftSideBarType: PropTypes.any,
-  showRightSidebar: PropTypes.any,
-  showRightSidebarAction: PropTypes.func,
   t: PropTypes.any,
   toggleLeftmenu: PropTypes.func
 }

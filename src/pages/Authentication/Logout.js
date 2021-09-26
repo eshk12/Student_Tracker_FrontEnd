@@ -4,11 +4,14 @@ import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
 
 import { logoutUser } from "../../store/actions"
+import {clearStorage} from "../../helpers/StorageManager";
 
-const Logout = props => {
+const Logout = ({history}) => {
   useEffect(() => {
-    props.logoutUser(props.history)
-  })
+    clearStorage();
+    history.push("/login")
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return <></>
 }

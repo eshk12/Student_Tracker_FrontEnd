@@ -238,12 +238,22 @@ const Dashboard = () => {
             options: options4,
         },
     ];
-
+    /*return (
+        <React.Fragment>
+            <div className="page-content">
+                <Container fluid>
+                    <Breadcrumbs title="StudentTracker" breadcrumbItem="עמוד ראשי"  />
+                    <Row>
+                        עמוד הבית - עוד לא מוכן.
+                    </Row>
+                </Container>
+        </React.Fragment>
+    )*/
     return (
         <React.Fragment>
             <div className="page-content">
                 <Container fluid>
-                    <Breadcrumbs title="Minible" breadcrumbItem="עמוד ראשי" />
+                    <Breadcrumbs title="StudentTracker" breadcrumbItem="עמוד ראשי"  />
                     <Row>
                         <MiniWidget reports={reports} />
                     </Row>

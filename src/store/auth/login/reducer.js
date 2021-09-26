@@ -18,7 +18,6 @@ const login = (state = initialState, action) => {
         ...state,
         loading: true,
       }
-      console.log(action)
       break
     case LOGIN_SUCCESS:
       state = {

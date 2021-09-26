@@ -18,20 +18,11 @@ const ProfileMenu = props => {
   // Declare a new state variable, which we'll call "menu"
   const [menu, setMenu] = useState(false)
 
-  const [username, setusername] = useState("Admin")
+  const [username, setusername] = useState("אורח")
 
   useEffect(() => {
-    if (localStorage.getItem("authUser")) {
-      if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-        const obj = JSON.parse(localStorage.getItem("authUser"))
-        setusername(obj.displayName)
-      } else if (
-        process.env.REACT_APP_DEFAULTAUTH === "fake" ||
-        process.env.REACT_APP_DEFAULTAUTH === "jwt"
-      ) {
-        const obj = JSON.parse(localStorage.getItem("authUser"))
-        setusername(obj.username)
-      }
+    if (localStorage.getItem("authUser_username")) {
+        setusername(localStorage.getItem("authUser_username"))
     }
   }, [props.success])
 
@@ -54,25 +45,12 @@ const ProfileMenu = props => {
           <DropdownItem tag="a" href="/profile">
             {" "}
             <i className="uil uil-user-circle font-size-18 align-middle text-muted me-1"></i>
-            {props.t("View Profile")}{" "}
-          </DropdownItem>
-          <DropdownItem tag="a" href="/">
-            <i className="uil uil-wallet font-size-18 align-middle me-1 text-muted"></i>
-            {props.t("My Wallet")}
-          </DropdownItem>
-          <DropdownItem tag="a" href="#">
-            <i className="uil uil-cog font-size-18 align-middle me-1 text-muted"></i>
-            {props.t("Settings")}
-            <span className="badge bg-soft-success rounded-pill mt-1 ms-2">03</span>
-          </DropdownItem>
-          <DropdownItem tag="a" href="auth-lock-screen">
-            <i className="uil uil-lock-alt font-size-18 align-middle me-1 text-muted"></i>
-            {props.t("Lock screen")}
+            פרופיל אישי{" "}
           </DropdownItem>
           <div className="dropdown-divider" />
-          <Link to="/login" className="dropdown-item">
+          <Link to="/logout" className="dropdown-item">
             <i className="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted"></i>
-            <span>{props.t("Logout")}</span>
+            <span>התנתק</span>
           </Link>
         </DropdownMenu>
       </Dropdown>
