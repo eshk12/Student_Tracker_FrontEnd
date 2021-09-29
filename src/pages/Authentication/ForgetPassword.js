@@ -35,7 +35,6 @@ const ForgetPasswordPage = ({ history }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(isLogged())
   function handleValidSubmit(event, values) {
     //props.userForgetPassword(values, props.history)
     setErrorMsg('')
