@@ -94,10 +94,10 @@ const Login = ({ history }) => {
                       <div className="mb-3">
                         <AvField
                           name="email"
-                          label='דוא"ל'
+                          label="דואר אלקטרוני"
                           className="form-control"
                           placeholder="דואר אלקטרוני"
-                          errorMessage="אנא הזמן כתובת דואר אלקטרוני תקינה."
+                          errorMessage="אנא הזן כתובת דואר אלקטרוני תקינה."
                           type="email"
                           required
                           value={loginForm.email}
@@ -153,10 +153,5 @@ const Login = ({ history }) => {
   )
 }
 
-const mapStateToProps = state => {
-  const { error } = state.Login
-  return { error }
-}
-
-export default connect(mapStateToProps, { loginUser, apiError, socialLogin })(Login)
+export default Login
 
