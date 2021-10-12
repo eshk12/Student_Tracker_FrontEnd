@@ -131,42 +131,45 @@ const InvitationForm = ({invitationObject = {}, history, handleSubmitForm}) => {
                         />
                     </div>
                 </Row>
-                <Row className="mb-3">
-                    <label className="col-md-2 col-form-label">שייך לחוג</label>
-                    <div className="col-md-10">
-                        <AvField
-                            type="select"
-                            name="departmentId"
-                            validate={{required: {value: true}}}
-                            value={innerInvitation.departmentId}
-                            errorMessage="ערך חובה"
-                            placeholder="שייך לחוג"
-                            onChange={(e) => {
-                                setInnerInvitation({
-                                    ...innerInvitation,
-                                    departmentId: e.target.value
-                                })
-                            }}
-                        >
-                            <option disabled={true}>בחר חוג</option>
-                            {
-                                (departmentList).map((department) => {
-                                    return <option key={department.id}
-                                                   value={department.id}>
-                                        {
+                {
+                    innerInvitation.id === undefined &&
+                    <Row className="mb-3">
+                        <label className="col-md-2 col-form-label">שייך לחוג</label>
+                        <div className="col-md-10">
+                            <AvField
+                                type="select"
+                                name="departmentId"
+                                validate={{required: {value: true}}}
+                                value={innerInvitation.departmentId}
+                                errorMessage="ערך חובה"
+                                placeholder="שייך לחוג"
+                                onChange={(e) => {
+                                    setInnerInvitation({
+                                        ...innerInvitation,
+                                        departmentId: e.target.value
+                                    })
+                                }}
+                            >
+                                <option value="0">בחר חוג</option>
+                                {
+                                    (departmentList).map((department) => {
+                                        return <option key={department.id}
+                                                       value={department.id}>
+                                            {
 
-                                            validPermission(userPermission, ADMIN_PERMISSION)
-                                                ? department.instituteObject.name + " - " + department.name
-                                                : department.name
-                                        }
+                                                validPermission(userPermission, ADMIN_PERMISSION)
+                                                    ? department.instituteObject.name + " - " + department.name
+                                                    : department.name
+                                            }
 
-                                    </option>
-                                })
-                            }
-                        </AvField>
+                                        </option>
+                                    })
+                                }
+                            </AvField>
 
-                    </div>
-                </Row>
+                        </div>
+                    </Row>
+                }
 
                 <Row className="mb-3">
                     <label className="col-md-2 col-form-label">מצב תצוגה</label>
