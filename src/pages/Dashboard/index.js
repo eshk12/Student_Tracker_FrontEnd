@@ -1,279 +1,111 @@
-import React from "react"
-import { Container, Row, Col} from "reactstrap"
+import React, {useEffect, useState} from "react"
+import {Container, Row, Col, Alert} from "reactstrap"
 
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 
-//Import Components
-import MiniWidget from "./mini-widget"
-import SalesAnalyticsChart from "./salesanalytics-chart"
 import TopUser from "./topuser"
 import RecentActivity from "./recent-activity"
-import SocialSource from "./socialsource"
-
-
-
-const series1 = [{
-    data: [25, 66, 41, 89, 63, 25, 44, 20, 36, 40, 54]
-}]
-
-const options1 = {
-    fill: {
-        colors: ['#5b73e8']
-    },
-    chart: {
-        width: 70,
-        sparkline: {
-            enabled: !0
-        }
-    },
-    plotOptions: {
-        bar: {
-            columnWidth: '50%'
-        }
-    },
-    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    xaxis: {
-        crosshairs: {
-            width: 1
-        },
-    },
-    tooltip: {
-        fixed: {
-            enabled: !1
-        },
-        x: {
-            show: !1
-        },
-        y: {
-            title: {
-                formatter: function (seriesName) {
-                    return ''
-                }
-            }
-        },
-        marker: {
-            show: !1
-        }
-    }
-};
-
-const series2 = [70]
-
-const options2 = {
-    fill: {
-        colors: ['#34c38f']
-    },
-    chart: {
-        sparkline: {
-            enabled: !0
-        }
-    },
-    dataLabels: {
-        enabled: !1
-    },
-    plotOptions: {
-        radialBar: {
-            hollow: {
-                margin: 0,
-                size: '60%'
-            },
-            track: {
-                margin: 0
-            },
-            dataLabels: {
-                show: !1
-            }
-        }
-    }
-};
-
-const series3 = [55]
-
-const options3 = {
-    fill: {
-        colors: ['#5b73e8']
-    },
-    chart: {
-        sparkline: {
-            enabled: !0
-        }
-    },
-    dataLabels: {
-        enabled: !1
-    },
-    plotOptions: {
-        radialBar: {
-            hollow: {
-                margin: 0,
-                size: '60%'
-            },
-            track: {
-                margin: 0
-            },
-            dataLabels: {
-                show: !1
-            }
-        }
-    }
-};
-
-const series4 = [{
-    data: [25, 66, 41, 89, 63, 25, 44, 12, 36, 9, 54]
-}]
-
-const options4 = {
-
-    fill: {
-        colors: ['#f1b44c']
-    },
-    chart: {
-        width: 70,
-        sparkline: {
-            enabled: !0
-        }
-    },
-    plotOptions: {
-        bar: {
-            columnWidth: '50%'
-        }
-    },
-    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    xaxis: {
-        crosshairs: {
-            width: 1
-        },
-    },
-    tooltip: {
-        fixed: {
-            enabled: !1
-        },
-        x: {
-            show: !1
-        },
-        y: {
-            title: {
-                formatter: function (seriesName) {
-                    return ''
-                }
-            }
-        },
-        marker: {
-            show: !1
-        }
-    }
-};
+import Widget from "./Widget";
+import {
+    getLastestCandidates,
+    getLastestInvitations,
+    getWidgetStatistics
+} from "../../microservices/statistics/statistics";
 
 const Dashboard = () => {
+    const [statisticList, setStatisticList] = useState([])
+    const [lastestInvitations, setLastestInvitations] = useState([])
+    const [lastestCandidates, setLastestCandidates] = useState([])
 
-    const reports = [
-        {
-            id: 1,
-            icon: "mdi mdi-arrow-up-bold",
-            title: "Total Revenue",
-            value: 34152,
-            prefix: "$",
-            suffix: "",
-            badgeValue: "2.65%",
-            decimal: 0,
-            charttype: "bar",
-            chartheight: 40,
-            chartwidth: 70,
-            color: "success",
-            desc: "since last week",
-            series: series1,
-            options: options1,
+    const [errorMsg, setErrorMsg] = useState('')
+    const [errorNum, setErrorNum] = useState('')
 
-        },
-        {
-            id: 2,
-            icon: "mdi mdi-arrow-down-bold",
-            title: "Orders",
-            value: 5643,
-            decimal: 0,
-            charttype: "radialBar",
-            chartheight: 45,
-            chartwidth: 45,
-            prefix: "",
-            suffix: "",
-            badgeValue: "0.82%",
-            color: "danger",
-            desc: "since last week",
-            series: series2,
-            options: options2,
-        },
-        {
-            id: 3,
-            icon: "mdi mdi-arrow-down-bold",
-            title: "Customers",
-            value: 45254,
-            decimal: 0,
-            prefix: "",
-            suffix: "",
-            charttype: "radialBar",
-            chartheight: 45,
-            chartwidth: 45,
-            badgeValue: "6.24%",
-            color: "danger",
-            desc: "since last week",
-            series: series3,
-            options: options3,
-        },
-        {
-            id: 4,
-            icon: "mdi mdi-arrow-up-bold",
-            title: "Growth",
-            value: 12.58,
-            decimal: 2,
-            prefix: "+",
-            suffix: "%",
-            charttype: "bar",
-            chartheight: 40,
-            chartwidth: 70,
-            badgeValue: "10.51%",
-            color: "success",
-            desc: "since last week",
-            series: series4,
-            options: options4,
-        },
-    ];
-    /*return (
-        <React.Fragment>
-            <div className="page-content">
-                <Container fluid>
-                    <Breadcrumbs title="StudentTracker" breadcrumbItem="עמוד ראשי"  />
-                    <Row>
-                        עמוד הבית - עוד לא מוכן.
-                    </Row>
-                </Container>
-        </React.Fragment>
-    )*/
+    const [widErrorMsg, setWidErrorMsg] = useState('')
+    const [widErrorNum, setWidErrorNum] = useState('')
+    const [invErrorMsg, setInvErrorMsg] = useState('')
+    const [invErrorNum, setInvErrorNum] = useState('')
+    const [canErrorMsg, setCanErrorMsg] = useState('')
+    const [canErrorNum, setCanErrorNum] = useState('')
+    useEffect(() => {
+        getWidgetStatistics().then((response) => {
+            if (response.errorCode !== null && response.errorName !== null) {
+                if (response.errorCode === 999) { //invalid token so... logout please.
+                    setWidErrorMsg("אירעה שגיאה, אנא נסה מאוחר יותר.")
+                } else {
+                    setWidErrorMsg(response.errorName)
+                    setWidErrorNum(response.errorCode)
+                }
+            } else {
+                setStatisticList(response.object)
+            }
+        }).catch((e) => {
+            setErrorMsg("אירעה שגיאה, אנא נסה מאוחר יותר.")
+        })
+    }, [])
+
+    useEffect(() => {
+        getLastestInvitations().then((response) => {
+            if (response.errorCode !== null && response.errorName !== null) {
+                if (response.errorCode === 999) { //invalid token so... logout please.
+                    setInvErrorMsg("אירעה שגיאה, אנא נסה מאוחר יותר.")
+                } else {
+                    setInvErrorMsg(response.errorName)
+                    setInvErrorNum(response.errorCode)
+                }
+            } else {
+                setLastestInvitations(response.object)
+            }
+        }).catch((e) => {
+            setErrorMsg("אירעה שגיאה, אנא נסה מאוחר יותר.")
+        })
+        getLastestCandidates().then((response) => {
+            if (response.errorCode !== null && response.errorName !== null) {
+                if (response.errorCode === 999) { //invalid token so... logout please.
+                    setCanErrorMsg("אירעה שגיאה, אנא נסה מאוחר יותר.")
+                } else {
+                    setCanErrorMsg(response.errorName)
+                    setCanErrorNum(response.errorCode)
+                }
+            } else {
+                setLastestCandidates(response.object)
+            }
+        }).catch((e) => {
+            setErrorMsg("אירעה שגיאה, אנא נסה מאוחר יותר.")
+        })
+    }, [])
     return (
         <React.Fragment>
             <div className="page-content">
                 <Container fluid>
-                    <Breadcrumbs title="StudentTracker" breadcrumbItem="עמוד ראשי"  />
-                    <Row>
-                        <MiniWidget reports={reports} />
-                    </Row>
+                    <Breadcrumbs title="StudentTracker" breadcrumbItem="עמוד ראשי"/>
+                    {
+                        (errorMsg !== '')
+                            ? <Alert color="danger">{errorMsg}</Alert>
+                            : (
+                                <React.Fragment>
+                                    <Row>
+                                        <Widget statistics={statisticList}/>
+                                    </Row>
+                                    <Row>
+                                        <Col xl={6}>
+                                            <TopUser
+                                                canErrorMsg={canErrorMsg}
+                                                lastestCandidates={lastestCandidates}
+                                            />
+                                        </Col>
+                                        <Col xl={6}>
+                                            <RecentActivity
+                                                lastestInvitations={lastestInvitations}
+                                                invErrorMsg={invErrorMsg}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </React.Fragment>
+                            )
 
-                    <Row>
-                        <Col xl={12}>
-                            <SalesAnalyticsChart />
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col xl={4}>
-                            <TopUser />
-                        </Col>
-                        <Col xl={4}>
-                            <RecentActivity />
-                        </Col>
-                        <Col xl={4}>
-                            <SocialSource />
-                        </Col>
-                    </Row>
+                    }
                 </Container>
             </div>
         </React.Fragment>

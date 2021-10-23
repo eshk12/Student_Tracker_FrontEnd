@@ -37,8 +37,8 @@ const UserForm = (props) => {
 
     /* eslint eqeqeq: 0 */
     useEffect(() => {
-        if (validPermission(localStorage.getItem("permission"), ADMIN_INSTITUTE_PERMISSION)) {
-            setUserPermission(localStorage.getItem("permission"));
+        if (validPermission(localStorage.getItem("authUser_permission"), ADMIN_INSTITUTE_PERMISSION)) {
+            setUserPermission(localStorage.getItem("authUser_permission"));
             getInstitutes().then((response) => {
                 if (response.errorCode !== null && response.errorName !== null) {
                     if (response.errorCode === 999) { //invalid token so... logout please.
@@ -56,7 +56,7 @@ const UserForm = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     useEffect(() => {
-        if(userPermission == ADMIN_INSTITUTE_PERMISSION){
+        if(userPermission === ADMIN_INSTITUTE_PERMISSION){
             setPermissionArr([2,3]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -273,6 +273,7 @@ const UserForm = (props) => {
                 </Row>
 
                 {
+
                     validPermission(userPermission, ADMIN_PERMISSION) &&
                     <Row className="mb-3">
                         <label className="col-md-2 col-form-label">שייך למוסד</label>

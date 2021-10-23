@@ -44,7 +44,7 @@ const Departments = props => {
     }, [])
 
     const pageOptions = {
-        sizePerPage: 3,
+        sizePerPage: 10,
         totalSize: (!departmentsList) ? 0 : departmentsList.length,
         custom: true,
     }

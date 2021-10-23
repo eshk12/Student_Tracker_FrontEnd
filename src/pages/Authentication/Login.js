@@ -3,15 +3,11 @@ import React, {useEffect, useState} from "react"
 
 import { Row, Col, Alert, Container ,CardBody,Card} from "reactstrap"
 
-// Redux
-import { connect } from "react-redux"
 import {  Link } from "react-router-dom"
 
 // availity-reactstrap-validation
 import { AvForm, AvField } from "availity-reactstrap-validation"
 
-// actions
-import { loginUser, apiError, socialLogin } from "../../store/actions"
 
 // import images
 import logo from "../../assets/images/logo-dark.png"

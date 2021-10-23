@@ -38,7 +38,6 @@ import AddExcelFileCandidate from "../pages/Candidates/AddExcelFileCandidate";
 const userRoutes = [
     {path: "/dashboard", component: Dashboard},
 
-
     {path: "/users", component: Users},
     {path: "/users/add/", component: AddUser},
     {path: "/users/edit/:id", component: EditUser},

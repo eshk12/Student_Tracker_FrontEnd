@@ -1,16 +1,12 @@
 import React from "react"
-import {Card, CardBody, Table} from "reactstrap"
+import {Alert, Card, CardBody, Table} from "reactstrap"
 
 //Simple bar
 import SimpleBar from "simplebar-react"
 
-import avatar4 from "../../assets/images/users/avatar-4.jpg"
-import avatar5 from "../../assets/images/users/avatar-5.jpg"
-import avatar6 from "../../assets/images/users/avatar-6.jpg"
-import avatar7 from "../../assets/images/users/avatar-7.jpg"
-import avatar8 from "../../assets/images/users/avatar-8.jpg"
+import {candidateStatus, candidateStatusColors} from "../../helpers/definitions";
 
-const TopUser = () => {
+const TopUser = ({lastestCandidates, canErrorMsg}) => {
     return (
         <React.Fragment>
             <Card>
@@ -20,73 +16,52 @@ const TopUser = () => {
                     </div>
                     <h4 className="card-title mb-4">עדכוני סטודנטים אחרונים</h4>
                     <SimpleBar style={{maxHeight: "336px"}}>
-                        <div className="table-responsive">
-                            <Table className="table-borderless table-centered table-nowrap">
-                                <tbody>
-                                <tr>
-                                    <td style={{width: "20px"}}><img src={avatar4} className="avatar-xs rounded-circle "
-                                                                     alt="..."/></td>
-                                    <td>
-                                        <h6 className="font-size-15 mb-1 fw-normal">איציק ברבי</h6>
-                                        <p className="text-muted font-size-13 mb-0">
-                                            <i className="mdi mdi-map-marker"></i> אשקלון</p>
-                                    </td>
-                                    <td><span className="badge bg-soft-danger font-size-12">ביטול הרשמה</span></td>
-                                    <td className="text-muted fw-semibold text-end">
-                                        04/05/2021
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><img src={avatar5} className="avatar-xs rounded-circle " alt="..."/></td>
-                                    <td>
-                                        <h6 className="font-size-15 mb-1 fw-normal">איציק ברבי</h6>
-                                        <p className="text-muted font-size-13 mb-0"><i
-                                            className="mdi mdi-map-marker"></i> אשקלון</p>
-                                    </td>
-                                    <td><span className="badge bg-soft-success font-size-12">ערך מערכת</span></td>
-                                    <td className="text-muted fw-semibold text-end">
-                                        04/05/2021
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><img src={avatar6} className="avatar-xs rounded-circle " alt="..."/></td>
-                                    <td>
-                                        <h6 className="font-size-15 mb-1 fw-normal">איציק ברבי</h6>
-                                        <p className="text-muted font-size-13 mb-0"><i
-                                            className="mdi mdi-map-marker"></i> אשקלון</p>
-                                    </td>
-                                    <td><span className="badge bg-soft-info font-size-12">יערוך במועד מאוחר יותר</span></td>
-                                    <td className="text-muted fw-semibold text-end">
-                                        04/05/2021
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><img src={avatar7} className="avatar-xs rounded-circle " alt="..."/></td>
-                                    <td>
-                                        <h6 className="font-size-15 mb-1 fw-normal">איציק ברבי</h6>
-                                        <p className="text-muted font-size-13 mb-0"><i
-                                            className="mdi mdi-map-marker"></i> אשדוד</p>
-                                    </td>
-                                    <td><span className="badge bg-soft-warning font-size-12">מתלבט</span></td>
-                                    <td className="text-muted fw-semibold text-end">
-                                        04/05/2021
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><img src={avatar8} className="avatar-xs rounded-circle " alt="..."/></td>
-                                    <td>
-                                        <h6 className="font-size-15 mb-1 fw-normal">איציק ברבי</h6>
-                                        <p className="text-muted font-size-13 mb-0"><i
-                                            className="mdi mdi-map-marker"></i> אשדוד</p>
-                                    </td>
-                                    <td><span className="badge bg-soft-info font-size-12">יערוך במועד מאוחר יותר</span></td>
-                                    <td className="text-muted fw-semibold text-end">
-                                        04/05/2021
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </Table>
-                        </div>
+                        {
+                            (canErrorMsg !== '')
+                                ? <Alert color="warning">{canErrorMsg}</Alert>
+                                :
+                                <div className="table-responsive">
+                                    <Table className="table-borderless table-centered table-nowrap">
+                                        <tbody>
+                                        {
+                                            lastestCandidates.map((item, key) => {
+                                                return (
+                                                    <tr key={key}>
+                                                        <td>
+                                                            <h6 className="font-size-15 mb-1 fw-normal">{item.candidateName}</h6>
+                                                            <p className="text-muted font-size-13 mb-0">
+                                                                <i className="mdi mdi-map-marker"></i>
+                                                                חוג
+                                                                ל{item.invitationObject.departmentObject.name} במוסד {item.invitationObject.departmentObject.instituteObject.name}
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                    <span
+                                                        className={
+                                                            `badge 
+                                                            ${
+                                                                (item.candidateStatus !== "" && item.candidateStatus !== null)
+                                                                    ? candidateStatusColors[item.candidateStatus]
+                                                                    : candidateStatusColors[0]
+                                                            } font-size-12`}
+                                                    >
+                                                        {(item.candidateStatus !== "" && item.candidateStatus !== null)
+                                                            ? candidateStatus[item.candidateStatus]
+                                                            : 'טרם נקבע'}
+                                                    </span>
+                                                        </td>
+                                                        <td className="text-muted fw-semibold text-end">
+                                                            18/10/21
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            })
+                                        }
+
+                                        </tbody>
+                                    </Table>
+                                </div>
+                        }
                     </SimpleBar>
                 </CardBody>
             </Card>

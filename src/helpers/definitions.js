@@ -35,6 +35,17 @@ export const candidateStatus = [
     "אין מענה טלפוני"
 ];
 
+export const candidateStatusColors = [
+    "bg-soft-info",
+    "bg-soft-success",
+    "bg-soft-primary",
+    "bg-soft-warning",
+    "bg-soft-secondary",
+    "bg-soft-secondary",
+    "bg-soft-danger",
+    "bg-soft-warning",
+];
+
 export const validPermission = (userPermission, requiredPermission) => {
     return userPermission <= requiredPermission;
 }

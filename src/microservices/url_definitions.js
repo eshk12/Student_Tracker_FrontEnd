@@ -43,3 +43,7 @@ export const GET_INSTITUTES_DEPARTMENT_PERMISSION = "/department/getAllInstitute
 export const PROFILE_GET_DETAILS = "/profile/getDetails"
 export const PROFILE_UPDATE_USER = "/profile/updateUser"
 export const PROFILE_UPDATE_PASSWORD = "/profile/updatePassword"
+
+export const STATISTICS_GET_WIDGETS = "/statistics/getCounts"
+export const STATISTICS_GET_LASTEST_INVITATIONS = "/statistics/lastestInvitations"
+export const STATISTICS_GET_LASTEST_CANDIDATES = "/statistics/lastestCandidates"

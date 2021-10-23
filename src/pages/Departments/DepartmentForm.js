@@ -26,7 +26,7 @@ const DepartmentForm = (props) => {
 
     /* eslint eqeqeq: 0 */
     useEffect(() => {
-        if(localStorage.getItem("permission") == 1){ //admin permission
+        if(localStorage.getItem("authUser_permission") == 1){ //admin permission
             setIsAdmin(true);
             getInstitutes().then((response) => {
                 if (response.errorCode !== null && response.errorName !== null) {

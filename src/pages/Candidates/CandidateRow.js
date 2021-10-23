@@ -36,7 +36,7 @@ const userRow = () => [
         text: "תאריך עריכת מערכת",
         sort: true,
         formatter: (cellContent, candidate) => {
-            if(candidate.scheduleDate !== '' && candidate.scheduleDate != undefined){
+            if(parseInt(candidate.scheduleDate) > 0){
                 return toDateView(candidate.scheduleDate)
             }else{
                 return "טרם ערך"

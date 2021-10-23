@@ -136,7 +136,7 @@ const CandidateForm = ({candidateObject = {}, history, handleSubmitForm}) => {
                             name="scheduleDate"
                             type="date"
                             placeholder=""
-                            value={innerCandidate.scheduleDate}
+                            value={parseInt(innerCandidate.scheduleDate) > 0 ? innerCandidate.scheduleDate : null}
                             onChange={(e) => {
                                 setInnerCandidate({
                                     ...innerCandidate,

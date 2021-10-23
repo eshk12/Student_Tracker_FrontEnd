@@ -13,7 +13,7 @@ const InvitationForm = ({invitationObject = {}, history, handleSubmitForm}) => {
     const [departmentList, setDepartmentList] = useState([])
     const [userPermission, setUserPermission] = useState(0)
     useEffect(() => {
-        setUserPermission(localStorage.getItem("permission"));
+        setUserPermission(localStorage.getItem("authUser_permission"));
         if (Object.keys(invitationObject).length > 0) // if exists update the state. //UPDATE COMPONENT
         {
             const modifyiedInvitationObject = {
