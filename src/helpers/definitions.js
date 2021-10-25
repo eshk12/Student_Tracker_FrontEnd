@@ -35,6 +35,13 @@ export const candidateStatus = [
     "אין מענה טלפוני"
 ];
 
+export const registrationState = [
+    "טרם נקבע",
+    "התקבל",
+    "קבלה בתנאי אנגלית",
+    "קבלה בתנאי שנה א'"
+];
+
 export const candidateStatusColors = [
     "bg-soft-info",
     "bg-soft-success",
@@ -46,6 +53,16 @@ export const candidateStatusColors = [
     "bg-soft-warning",
 ];
 
+const startYear = 2021;
+export const currentYear = new Date().getFullYear();
+const endYear = currentYear+5; // current year +5
+export const studyYearArr = () => { // will return year range between 2021 - currentYear+5
+    let yearArr = [];
+    for(let i = startYear;i <endYear;i++){
+        yearArr.push(i);
+    }
+    return yearArr;
+}
 export const validPermission = (userPermission, requiredPermission) => {
     return userPermission <= requiredPermission;
 }

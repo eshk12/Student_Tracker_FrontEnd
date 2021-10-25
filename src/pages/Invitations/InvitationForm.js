@@ -5,7 +5,7 @@ import {
 } from "reactstrap"
 import {AvField, AvForm} from "availity-reactstrap-validation"
 import {getDepartments} from "../../microservices/invitations/invitations";
-import {ADMIN_PERMISSION, validPermission} from "../../helpers/definitions";
+import {ADMIN_PERMISSION, currentYear, studyYearArr, validPermission} from "../../helpers/definitions";
 
 
 const InvitationForm = ({invitationObject = {}, history, handleSubmitForm}) => {
@@ -109,26 +109,23 @@ const InvitationForm = ({invitationObject = {}, history, handleSubmitForm}) => {
                     </label>
                     <div className="col-md-10">
                         <AvField
+                            type="select"
                             name="studyYear"
-                            placeholder="שנת לימודים"
-                            type="text"
-                            errorMessage="ערך מספרי בלבד"
-                            className="form-control"
-                            validate={{
-                                required: {value: true},
-                                pattern: {value: '^[0-9]+$'},
-                                minLength: {value: 4, errorMessage: 'שנת לימוד מורכבת מ4 ספרות בלבד'},
-                                maxLength: {value: 4, errorMessage: 'שנת לימוד מורכבת מ4 ספרות בלבד'},
-                            }}
-                            id="validationCustom03"
+                            validate={{required: {value: true}}}
                             value={innerInvitation.studyYear}
+                            errorMessage="ערך חובה"
+                            placeholder="שנת לימודים"
                             onChange={(e) => {
                                 setInnerInvitation({
                                     ...innerInvitation,
                                     studyYear: e.target.value
                                 })
                             }}
-                        />
+                        >
+                            {
+                                studyYearArr().map((year, index) => <option  value={year} key={index}>{year}</option> )
+                            }
+                        </AvField>
                     </div>
                 </Row>
                 {

@@ -6,6 +6,7 @@ import {
     Button
 } from "reactstrap"
 import {AvField, AvForm} from "availity-reactstrap-validation"
+import {isValidIsraelPhoneNumber} from "../../helpers/api_helper";
 
 
 const InstituteForm = (props) => {
@@ -176,11 +177,18 @@ const InstituteForm = (props) => {
                             <Label htmlFor="validationCustom04">מספר טלפון</Label>
                             <AvField
                                 name="phoneNumber"
-                                placeholder="מספר טלפון"
+                                placeholder="מספר פלאפון"
                                 type="text"
-                                errorMessage="אנא הזן מספר טלפון תקין"
+                                errorMessage="אנא הזן מספר פלאפון תקין"
                                 className="form-control"
-                                validate={{required: {value: true}}}
+                                validate={
+                                    {
+                                        required: {value: true},
+                                        validPhone: () => {
+                                            return isValidIsraelPhoneNumber(innerInstitute.phoneNumber)
+                                        }
+                                    }
+                                }
                                 id="validationCustom04"
                                 value={innerInstitute.phoneNumber}
                                 onChange={(e) => { setInnerInstitute({

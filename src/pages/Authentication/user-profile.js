@@ -18,6 +18,7 @@ import Breadcrumb from "../../components/Common/Breadcrumb"
 
 // actions
 import {editProfileUserPassword, getDetails, updateProfileUser} from "../../microservices/profile/profile";
+import {isValidIsraelPhoneNumber} from "../../helpers/api_helper";
 
 const UserProfile = props => {
   const [errorMsg, setErrorMsg] = useState('');
@@ -233,11 +234,18 @@ const UserProfile = props => {
                     <div className="mb-3">
                       <AvField
                           name="phone"
-                          placeholder="מספר טלפון"
+                          placeholder="מספר פלאפון"
                           type="text"
-                          errorMessage="אנא הזן קלט תקין"
+                          errorMessage="אנא הזן מספר פלאפון תקין"
                           className="form-control"
-                          validate={{required: {value: true}}}
+                          validate={
+                            {
+                              required: {value: true},
+                              validPhone: () => {
+                                return isValidIsraelPhoneNumber(profileUser.phone)
+                              }
+                            }
+                          }
                           id="validationCustom04"
                           value={profileUser.phone}
                           onChange={(e) => {

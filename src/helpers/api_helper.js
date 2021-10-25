@@ -58,3 +58,23 @@ export const toDateView = (strTimestamp, spliter = '/', input = false) => {
   const year = date.getFullYear();
   return (input) ? year+spliter+month+spliter+day : day+spliter+month+spliter+year;
 }
+
+export const isValidIsraeliID = (id) => {
+  id = String(id).trim();
+  if (id.length > 9 || id.length < 5 || isNaN(id)) return false;
+
+  // Pad string with zeros up to 9 digits
+  id = id.length < 9 ? ("00000000" + id).slice(-9) : id;
+
+  return Array
+      .from(id, Number)
+      .reduce((counter, digit, i) => {
+        const step = digit * ((i % 2) + 1);
+        return counter + (step > 9 ? step - 9 : step);
+      }) % 10 === 0;
+}
+
+export const isValidIsraelPhoneNumber = (phoneNumber) => {
+  const regex = /^0(5[^7](-?)|[2-4]|[8-9]|7[0-9])[0-9]{7}$/;
+  return regex.test(phoneNumber)
+}

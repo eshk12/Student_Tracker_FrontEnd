@@ -7,6 +7,7 @@ import {AvField, AvForm} from "availity-reactstrap-validation"
 import {getInstitutes} from "../../microservices/departments/departments";
 import {getDepartmentsWithInstituteId} from "../../microservices/departments/departments";
 import {validPermission, ADMIN_INSTITUTE_PERMISSION, ADMIN_PERMISSION, getPermissionTitle} from "../../helpers/definitions"
+import {isValidIsraeliID, isValidIsraelPhoneNumber} from "../../helpers/api_helper";
 
 
 const UserForm = (props) => {
@@ -17,28 +18,8 @@ const UserForm = (props) => {
     const [permissionArr, setPermissionArr] = useState([1,2,3])
     const [userPermission, setUserPermission] = useState(0)
     useEffect(() => {
-        if (Object.keys(userObject).length > 0) // if exists update the state. //UPDATE COMPONENT
-        {
-            const modifyiedUserObject = {
-                ...userObject,
-                instituteId : userObject.instituteObject.id,
-                departmentId : userObject.departmentObject.id
-            }
-            delete modifyiedUserObject.password;
-            delete modifyiedUserObject.instituteObject;
-            delete modifyiedUserObject.departmentObject;
-            setInnerUser(modifyiedUserObject)
-            fetchDepartments(modifyiedUserObject.instituteId)
-        }else{ //add component
-            fetchDepartments()
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userObject.id])
-
-    /* eslint eqeqeq: 0 */
-    useEffect(() => {
+        setUserPermission(parseInt(localStorage.getItem("authUser_permission")));
         if (validPermission(localStorage.getItem("authUser_permission"), ADMIN_INSTITUTE_PERMISSION)) {
-            setUserPermission(localStorage.getItem("authUser_permission"));
             getInstitutes().then((response) => {
                 if (response.errorCode !== null && response.errorName !== null) {
                     if (response.errorCode === 999) { //invalid token so... logout please.
@@ -56,6 +37,26 @@ const UserForm = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     useEffect(() => {
+        if (Object.keys(userObject).length > 0) // if exists update the state. //UPDATE COMPONENT
+        {
+            const modifyiedUserObject = {
+                ...userObject,
+                instituteId : userObject.instituteObject.id,
+                departmentId : userObject.departmentObject.id
+            }
+            delete modifyiedUserObject.password;
+            delete modifyiedUserObject.instituteObject;
+            delete modifyiedUserObject.departmentObject;
+            setInnerUser(modifyiedUserObject)
+            fetchDepartments(modifyiedUserObject.instituteId)
+        }/*else{ //add component
+            fetchDepartments()
+        }*/
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [userObject.id])
+
+    /* eslint eqeqeq: 0 */
+    useEffect(() => {
         if(userPermission === ADMIN_INSTITUTE_PERMISSION){
             setPermissionArr([2,3]);
         }
@@ -67,7 +68,8 @@ const UserForm = (props) => {
                 if (response.errorCode === 999) { //invalid token so... logout please.
                     props.history.push('/logout')
                 } else {
-                    props.history.push('/users')
+                    //props.history.push('/users')
+                    console.log(1)
                 }
             } else {
                 setDepartmentList(response.object);
@@ -87,6 +89,7 @@ const UserForm = (props) => {
                     handleValidSubmit(e, v)
                 }}
             >
+
                 {innerUser.id !== undefined &&
 
                 <Row className="mb-3">
@@ -128,7 +131,14 @@ const UserForm = (props) => {
                                 type="text"
                                 errorMessage="אנא הזן מספר תעודת זהות תקינה."
                                 className="form-control"
-                                validate={{required: {value: true}}}
+                                validate={
+                                    {
+                                        required: {value: true},
+                                        isValid: () => {
+                                            return isValidIsraeliID(innerUser.uid)
+                                        }
+                                    }
+                                }
                                 id="validationCustom03"
                                 value={innerUser.uid}
                                 onChange={(e) => {
@@ -254,11 +264,18 @@ const UserForm = (props) => {
                         <div className="mb-3">
                             <AvField
                                 name="phone"
-                                placeholder="מספר טלפון"
+                                placeholder="מספר פלאפון"
                                 type="text"
-                                errorMessage="אנא הזן קלט תקין"
+                                errorMessage="אנא הזן מספר פלאפון תקין"
                                 className="form-control"
-                                validate={{required: {value: true}}}
+                                validate={
+                                    {
+                                        required: {value: true},
+                                        validPhone: () => {
+                                            return isValidIsraelPhoneNumber(innerUser.phone)
+                                        }
+                                    }
+                                }
                                 id="validationCustom04"
                                 value={innerUser.phone}
                                 onChange={(e) => {
@@ -290,6 +307,7 @@ const UserForm = (props) => {
                                         ...innerUser,
                                         instituteId: e.target.value
                                     })
+                                    setDepartmentList([])
                                     fetchDepartments(e.target.value)
                                 }}
                             >

@@ -1,7 +1,7 @@
 import React from "react"
 import {Link} from "react-router-dom"
 import { toDateView } from "../../helpers/api_helper"
-import {candidateStatus} from "../../helpers/definitions";
+import {candidateStatus, registrationState} from "../../helpers/definitions";
 
 const userRow = () => [
     {
@@ -27,7 +27,7 @@ const userRow = () => [
         text: "מצב הרשמה",
         sort: true,
         formatter: (cellContent, candidate) => {
-            return candidate.registerationState == undefined || candidate.registerationState === ''  ? 'טרם נקבע' : candidate.registerationState ;
+            return candidate.registerationState == undefined || candidate.registerationState === ''  ? 'טרם נקבע' : registrationState[candidate.registerationState] ;
         }
     },
 

@@ -4,8 +4,8 @@ import {
     Button, Col, Label
 } from "reactstrap"
 import {AvField, AvForm} from "availity-reactstrap-validation"
-import { candidateStatus } from "../../helpers/definitions";
-import {toDateView} from "../../helpers/api_helper";
+import {candidateStatus, registrationState} from "../../helpers/definitions";
+import {isValidIsraeliID, isValidIsraelPhoneNumber, toDateView} from "../../helpers/api_helper";
 
 
 const CandidateForm = ({candidateObject = {}, history, handleSubmitForm}) => {
@@ -78,7 +78,9 @@ const CandidateForm = ({candidateObject = {}, history, handleSubmitForm}) => {
                                 validate={
                                     {
                                         required: {value: true},
-                                        pattern: {value: '^[0-9]+$'},
+                                        isValid: () => {
+                                            return isValidIsraeliID(innerCandidate.uid)
+                                        }
                                     }
                                 }
 
@@ -126,6 +128,70 @@ const CandidateForm = ({candidateObject = {}, history, handleSubmitForm}) => {
                                 htmlFor="example-text-input"
                                 className="col-md-6 col-form-label"
                             >
+                                פרטי התקשרות
+                            </label>
+                        </div>
+                    </Col>
+                    <Col md="5">
+                        <div className="mb-3">
+                            <AvField
+                                name="email"
+                                placeholder="דואר אלקטרוני"
+                                type="email"
+                                errorMessage="אנא הזו כתובת דואר אלקטרוני תקינה."
+                                className="form-control"
+                                validate={
+                                    {
+                                        required: {value: true}
+                                    }
+                                }
+
+                                id="validationCustom03"
+                                value={innerCandidate.email}
+                                onChange={(e) => {
+                                    setInnerCandidate({
+                                        ...innerCandidate,
+                                        email: e.target.value
+                                    })
+                                }}
+                            />
+                        </div>
+                    </Col>
+                    <Col md="5">
+                        <div className="mb-3">
+                            <AvField
+                                name="phoneNumber"
+                                placeholder="מספר פלאפון"
+                                type="text"
+                                errorMessage="אנא הזן מספר פלאפון תקין"
+                                className="form-control"
+                                validate={
+                                    {
+                                        required: {value: true},
+                                        validPhone: () => {
+                                            return isValidIsraelPhoneNumber(innerCandidate.phoneNumber)
+                                        }
+                                    }
+                                }
+                                id="validationCustom04"
+                                value={innerCandidate.phoneNumber}
+                                onChange={(e) => {
+                                    setInnerCandidate({
+                                        ...innerCandidate,
+                                        phoneNumber: e.target.value
+                                    })
+                                }}
+                            />
+                        </div>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md="2">
+                        <div className="mb-4">
+                            <label
+                                htmlFor="example-text-input"
+                                className="col-md-6 col-form-label"
+                            >
                                 פרטי הרשמה
                             </label>
                         </div>
@@ -150,6 +216,24 @@ const CandidateForm = ({candidateObject = {}, history, handleSubmitForm}) => {
                         <div className="mb-3">
                             <Label htmlFor="validationCustom05">מצב הרשמה</Label>
                             <AvField
+                                type="select"
+                                name="registerationState"
+                                value={innerCandidate.registerationState}
+                                placeholder="מצב הרשמה"
+                                onChange={(e) => {
+                                    setInnerCandidate({
+                                        ...innerCandidate,
+                                        registerationState: e.target.value
+                                    })
+                                }}
+                            >
+                                {
+                                    registrationState.map((status, key) => {
+                                        return <option key={key} value={key}>{status}</option>
+                                    })
+                                }
+                            </AvField>
+                            {/*<AvField
                                 name="registerationState"
                                 placeholder="מצב הרשמה"
                                 type="text"
@@ -161,7 +245,7 @@ const CandidateForm = ({candidateObject = {}, history, handleSubmitForm}) => {
                                         registerationState: e.target.value
                                     })
                                 }}
-                            />
+                            />*/}
                         </div>
                     </Col>
                     <Col md="4">
@@ -181,7 +265,7 @@ const CandidateForm = ({candidateObject = {}, history, handleSubmitForm}) => {
                             >
                                 {
                                     candidateStatus.map((status, key) => {
-                                      return <option key={key} value={key}>{status}</option>
+                                        return <option key={key} value={key}>{status}</option>
                                     })
                                 }
                             </AvField>
