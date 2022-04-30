@@ -32,6 +32,7 @@ pipeline {
                 }
             steps {
                 echo "Test"
+                echo "..."
                 }
         }
 
