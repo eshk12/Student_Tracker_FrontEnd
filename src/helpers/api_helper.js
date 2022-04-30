@@ -4,7 +4,7 @@ import accessToken from "./jwt-token-access/accessToken"
 const token = accessToken
 
 //apply base url for axios
-const API_URL = "http://localhost:8801/"
+const API_URL = "http://studenttracker.co.il:8801/"
 
 const axiosApi = axios.create({
   baseURL: API_URL,
