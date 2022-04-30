@@ -26,10 +26,6 @@ pipeline {
         }
 
         stage('test') {
-            when {
-                branch 'master'
-                beforeOptions true
-                }
             steps {
                 echo "Test"
                 echo "..."
