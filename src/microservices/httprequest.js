@@ -2,7 +2,7 @@
 import axios from "axios";
 import {storageManager} from "../helpers/StorageManager";
 
-const API_URL = "https://studenttracker.co.il:8801/"
+const API_URL = "https://api.studenttracker.co.il/"
 //const API_URL = "http://3.141.85.9:8801/"
 
 const axiosApi = axios.create({
