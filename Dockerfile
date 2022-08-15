@@ -5,7 +5,7 @@ COPY ./package*.json ./
 RUN npm install 
 COPY . .
 RUN npm run build
-FROM nginx:stable-alpine
+FROM nginx:1.23.1-alpine
 RUN chown -R nginx:nginx /usr/share/nginx/html && \
         chmod -R 755 /usr/share/nginx/html && \
         chown -R nginx:nginx /var/cache/nginx && \
