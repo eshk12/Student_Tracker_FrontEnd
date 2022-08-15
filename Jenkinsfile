@@ -29,6 +29,9 @@ pipeline {
             steps {
                 echo "Test"
                 echo "..."
+                sh "docker run --name front -d -p 80:80 front_end"
+                sh "sleep 30"
+                sh "docker rm -f front"
                 }
         }
 
