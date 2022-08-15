@@ -30,7 +30,7 @@ pipeline {
                 echo "Test"
                 echo "..."
                 sh "docker run --name front -d -p 80:80 front_end"
-                sh '''if [ $(curl -LI http://127.0.0.1 -o /dev/null -w '%{http_code}\n' -s) == '200' ]; then echo 'Service is up!'; fi'''
+                sh "curl -LI http://127.0.0.1"
                 sh "docker rm -f front"
                 }
         }
