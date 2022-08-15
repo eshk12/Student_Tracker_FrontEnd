@@ -43,7 +43,7 @@ pipeline {
             steps {
                 echo 'Publish image to ECR'
                 sh '''aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 274129698771.dkr.ecr.eu-central-1.amazonaws.com
-                    docker tag front:latest 274129698771.dkr.ecr.eu-central-1.amazonaws.com/front:latest
+                    docker tag front_end:latest 274129698771.dkr.ecr.eu-central-1.amazonaws.com/front:latest
                     docker push 274129698771.dkr.ecr.eu-central-1.amazonaws.com/front:latest'''
             }
         }
