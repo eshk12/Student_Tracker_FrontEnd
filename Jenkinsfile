@@ -30,7 +30,8 @@ pipeline {
                 echo "Test"
                 echo "..."
                 sh "docker run --name front -d -p 80:80 front_end"
-                sh "sleep 30"
+                sh "curl --write-out \"%{http_code}\n\" --silent --output /dev/null front"
+                sh "ls /dev/null"
                 sh "docker rm -f front"
                 }
         }
@@ -39,7 +40,7 @@ pipeline {
 
     post {
     always {
-        echo "Job doe"
+        echo "Job done"
         }
     }
 }
