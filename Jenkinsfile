@@ -30,7 +30,8 @@ pipeline {
                 echo "Test"
                 echo "..."
                 sh "docker run --name front -d -p 80:80 front_end"
-                sh "curl -LI http://127.0.0.1"
+                sh "docker network connect jenkins front"
+                sh "curl -LI front"
                 sh "docker rm -f front"
                 }
         }
