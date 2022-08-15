@@ -32,15 +32,15 @@ pipeline {
                 sh "docker run --name front -d -p 80:80 front_end"
                 sh "docker network connect jenkins front"
                 sh "curl -LI front"
-                sh "docker rm -f front"
                 }
         }
 
     }
-
+    
     post {
     always {
         echo "Job done"
+        sh "docker rm -f front"
         }
     }
 }
